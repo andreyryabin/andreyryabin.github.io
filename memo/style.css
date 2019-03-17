@@ -19,29 +19,33 @@ body.h100 {
 }
 
 
-.mainmenu {
+.gamemenu {
     position: absolute;
     z-index: 300;
-    background: #fff;
-    /*margin: 0 auto;*/
-    /*width: 80%;*/
-    /*text-align: center;*/
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top:0;
+    display: none;
 }
-
-.mainmenu a {
+.mainmenu a,
+.gamemenu a {
     display: inline-block;
     text-decoration: none;
-    /*background: #ccc;*/
-
     text-align: center;
-
     margin: 10px;
-
     border-radius: 10px;
 }
 
-.menutext {
 
+.mainmenu img,
+.gamemenu img{
+    border-radius: 10px;
+    max-width: 200px;
+    height: auto;
+}
+
+.menutext {
     color: #fff;
     font-size: 4em;
     /*font-weight: bold;*/
@@ -50,12 +54,14 @@ body.h100 {
     border-radius: 10px;
 }
 
-.mainmenu img {
-    border-radius: 10px;
-}
-
 .gamearea {
     padding: 10px;
+}
+
+.gamearea:after{
+    content: '';
+    display: block;
+    clear: both;
 }
 
 .card {
@@ -81,10 +87,11 @@ body.h100 {
 }
 
 .number {
-    /*padding: 10px 0;*/
+    padding: 0.5em;
     color: #fff;
-    font-size: 4em;
+    font-size: 2em;
     /*font-weight: bold;*/
+    text-align: left;
 }
 
 .card img {
@@ -190,3 +197,12 @@ body.h100 {
 /*.card.flip .back {*/
 /*transform: rotateY(360deg);*/
 /*}*/
+
+.finish .gamearea {
+    opacity: 0.3;
+
+}
+
+.finish .gamemenu {
+    display: block;
+}

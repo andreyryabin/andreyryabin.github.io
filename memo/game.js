@@ -20,17 +20,16 @@ function memogame() {
         timerclose: 0,
 
         gamearea: document.getElementById('gamearea'),
-        //mainmenu: document.getElementById('mainmenu'),
 
         hintclicks: 0,
-
+        lockcnt: 0,
 
         initialize: function () {
             let clientw = parseInt(document.body.clientWidth, 10);
             let clienth = parseInt(document.body.clientHeight, 10);
 
-            let cardInRow = 6;
-            if (clientw < 1024){
+            let cardInRow = 7;
+            if (clientw < 1024) {
                 cardInRow = 4;
             }
 
@@ -38,8 +37,7 @@ function memogame() {
             let cardInCol = (clienth - 40) / (cardSize + 20);
             let cardsCount = Math.floor(cardInCol) * cardInRow;
 
-            this.createcards(cardsCount,cardSize);
-
+            this.createcards(cardsCount, cardSize);
         },
 
         createcard: function (name, index, cardSize) {
@@ -128,9 +126,20 @@ function memogame() {
                     firstcard.lock = 1;
                     card.lock = 1;
 
+                    this.lockcnt += 2;
                     this.hintclicks = 0;
-
                 }
+
+                if (this.lockcnt === this.cards.length) {
+                    clearTimeout(this.timerclose);
+
+                    setTimeout(() => {
+                        document.body.classList.add('finish');
+                    }, 500);
+
+                    return;
+                }
+
 
                 this.timerclose = setTimeout(() => {
                     this.closecards()
@@ -172,6 +181,7 @@ function memogame() {
 
         closecards: function () {
             this.opened = [];
+
             for (let index = 0; index < this.cards.length; index++) {
                 if (!this.cards[index].lock) {
                     this.cards[index].$el.classList.remove('flip');
@@ -182,7 +192,6 @@ function memogame() {
                 this.hintclicks = 0;
                 this.showhint();
             }
-
         },
 
         opencards: function () {
