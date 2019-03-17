@@ -28,9 +28,9 @@
             let clientw = parseInt(document.body.clientWidth, 10);
             let clienth = parseInt(document.body.clientHeight, 10);
 
-            let cardInRow = 8;
+            let cardInRow = 6;
             if (clientw < 1024) {
-                cardInRow = 6;
+                cardInRow = 4;
             }
 
             let cardSize = ((clientw - 40) - (cardInRow * 20)) / cardInRow;
