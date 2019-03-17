@@ -16,7 +16,7 @@
         cards: [],
         opened: [],
 
-        intervalclose: 3000,
+        intervalclose: 2500,
         timerclose: 0,
 
         $el: document.getElementById('gamearea'),
