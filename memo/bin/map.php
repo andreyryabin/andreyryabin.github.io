@@ -53,4 +53,5 @@ function memoimagemap($opts) {
     file_put_contents($MAP_FILE, 'var memoimages = ' . json_encode($map,JSON_PRETTY_PRINT) . ';');
 
     fwrite(STDOUT, 'mapitems: ' . count($map) . PHP_EOL);
+    fwrite(STDOUT, 'saved to: ' . realpath($MAP_FILE) . PHP_EOL);
 }

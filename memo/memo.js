@@ -1,4 +1,4 @@
-function memogame() {
+(function () {
 
     let move_event = 'mousemove';
     let up_event = 'mouseup';
@@ -19,7 +19,7 @@ function memogame() {
         intervalclose: 3000,
         timerclose: 0,
 
-        gamearea: document.getElementById('gamearea'),
+        $el: document.getElementById('gamearea'),
 
         hintclicks: 0,
         lockcnt: 0,
@@ -55,14 +55,14 @@ function memogame() {
                 this.clickevent(index);
             });
 
-            this.gamearea.appendChild($el);
+            this.$el.appendChild($el);
             return $el;
         },
 
         createcards: function (cardsCount, cardSize) {
             clearTimeout(this.timerclose);
 
-            this.gamearea.innerHTML = '';
+            this.$el.innerHTML = '';
 
             this.cards = [];
             this.opened = [];
@@ -134,7 +134,7 @@ function memogame() {
                     clearTimeout(this.timerclose);
 
                     setTimeout(() => {
-                        document.body.classList.add('finish');
+                        gamemenu.add('Молодец!<br/>Играть еще!', 'index.html')
                     }, 500);
 
                     return;
@@ -224,7 +224,6 @@ function memogame() {
         return a;
     }
 
-
     document.addEventListener('DOMContentLoaded', function () {
         game.initialize();
 
@@ -233,4 +232,6 @@ function memogame() {
         // });
 
     });
-}
+})();
+
+

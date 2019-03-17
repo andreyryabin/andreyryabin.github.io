@@ -3,7 +3,7 @@ html, body {
     padding: 0;
 }
 
-html, body.h100 {
+html, body {
     height: 0;
     height: auto;
     height: 100%;
@@ -14,10 +14,6 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-body.h100 {
-    background: #fff;
-}
-
 
 .gamemenu {
     position: absolute;
@@ -25,21 +21,13 @@ body.h100 {
     width: 100%;
     height: 100%;
     left: 0;
-    top:0;
+    top: 0;
     display: none;
-}
-.mainmenu a,
-.gamemenu a {
-    display: inline-block;
-    text-decoration: none;
     text-align: center;
-    margin: 10px;
-    border-radius: 10px;
 }
-
 
 .mainmenu img,
-.gamemenu img{
+.gamemenu img {
     border-radius: 10px;
     max-width: 200px;
     height: auto;
@@ -52,13 +40,24 @@ body.h100 {
     background: #0097A7;
     padding: 10px;
     border-radius: 10px;
+
+    display: block;
+
+    margin: 10px;
+}
+
+.menutext a,
+a.menutext {
+    /*text-decoration: underline;*/
+    text-decoration: none;
+    color: #fff;
 }
 
 .gamearea {
     padding: 10px;
 }
 
-.gamearea:after{
+.gamearea:after {
     content: '';
     display: block;
     clear: both;
@@ -102,6 +101,11 @@ body.h100 {
 .card .front {
     background: #0097A7;
 }
+
+.garage .card .front{
+    background: #00A797;
+}
+
 
 .card.hint .front {
     background: #97A700;
