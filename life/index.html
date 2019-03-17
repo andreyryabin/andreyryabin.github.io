@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Игра Жизнь онлайн</title>
+    <style>
+        html, body, canvas, div {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 0;
+            height: auto;
+            height: 100%;
+            background: #fff;
+        }
+
+        canvas {
+            /*width: 100%;*/
+            /*height: 100%;*/
+            display: block
+        }
+
+        .move {
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+            /*background: #eee;*/
+            /*width: 95%;*/
+            text-align: center;
+        }
+
+        .move .btn {
+            padding: 0;
+            cursor: pointer;
+            min-width: 80px;
+            height: 80px;
+            font-size: 48px;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="move">
+    <div style="float: left;margin-left: 5px;">
+        <div style="margin-bottom: 5px;">
+            <button class="btn" title="Новая игра" id="btnclear">&#9724;</button>
+            <button class="btn" title="Сдвинуть вверх" id="btnup">&uarr;</button>
+            <button class="btn" title="Запустить игру" id="btnstart">=></button>
+        </div>
+        <div>
+            <button class="btn" title="Сдвинуть влево" id="btnleft">&larr;</button>
+            <button class="btn" title="Сдвинуть вниз" id="btndown">&darr;</button>
+            <button class="btn" title="Сдвинуть вправо" id="btnright">&rarr;</button>
+        </div>
+    </div>
+    <div style="float: left;margin-left: 5px;">
+        <div style="margin-bottom: 5px;">
+            <button class="btn" title="Увеличить масштаб" id="btnsizeplus">+</button>
+        </div>
+        <div>
+            <button class="btn" title="Уменьшить масштаб" id="btnsizeminus">-</button>
+        </div>
+    </div>
+    <div style="float: left;margin-left: 5px;">
+        <div style="margin-bottom: 5px;">
+            <button class="btn" title="Сохранить игру" id="btnshare">#</button>
+        </div>
+        <div>
+
+        </div>
+    </div>
+</div>
+
+<canvas id="lifecanvas">
+    //canvas not supported
+</canvas>
+<script type="text/javascript">
+
+    var size = 20;
+    var maxw = 80;
+    var maxh = 80;
+    var minsize = 5;
+
+    var arr = [];
+    var arrw = 0;
+    var arrh = 0;
+
+    var btnstart = document.getElementById('btnstart');
+    var btnclear = document.getElementById('btnclear');
+    var btnshare = document.getElementById('btnshare');
+    var canvas = document.getElementById('lifecanvas');
+
+    var btnleft = document.getElementById('btnleft');
+    var btnright = document.getElementById('btnright');
+    var btnup = document.getElementById('btnup');
+    var btndown = document.getElementById('btndown');
+
+    var btnsizeplus = document.getElementById('btnsizeplus');
+    var btnsizeminus = document.getElementById('btnsizeminus');
+
+    var ctx = canvas.getContext('2d');
+
+    var ciclecnt = 0;
+    var isdown = 0;
+    var lastpos = '';
+    var lastmap = '';
+    var lifeinterval;
+    var resizeinterval;
+
+    var moveinterval;
+
+    var lifetimeout = 100;
+    var resizetimeout = 100;
+
+    var firstcolor = -1;
+
+    var isclick = 0;
+
+    var move_event = 'mousemove';
+    var up_event = 'mouseup';
+    var down_event = 'mousedown';
+
+    if ("ontouchstart" in window) {
+        move_event = 'touchmove';
+        up_event = 'touchend';
+        down_event = 'touchstart';
+    }
+
+
+    var hpoints = [];
+
+    lifeHashLoad();
+    lifeResize();
+    lifeCreateNew();
+
+
+    function setSize(val) {
+        if (val >= minsize) {
+            size = val;
+        }
+    }
+
+    function lifeScale(sizeAdd) {
+        setSize(size + sizeAdd);
+        lifeResize();
+    }
+
+    function lifeResize() {
+        var clientw = parseInt(document.body.clientWidth, 10);
+        var clienth = parseInt(document.body.clientHeight, 10);
+
+        arrw = Math.round(clientw / size);
+        arrh = Math.round(clienth / size);
+
+        canvas.setAttribute('width', clientw);
+        canvas.setAttribute('height', clienth);
+
+        // canvas.setAttribute('width', canvasw * size);
+        // canvas.setAttribute('height', canvash * size);
+
+        if (arr.length > 0) {
+            for (var x = 0; x <= arrw; x++) {
+                if (arr[x] === undefined) {
+                    arr[x] = [];
+                }
+
+                for (var y = 0; y <= arrh; y++) {
+                    arr[x][y] = getPoint(x, y);
+                    renderPoint(x, y, arr[x][y]);
+                }
+            }
+        }
+    }
+
+    function lifeCreateNew() {
+        ciclecnt = 0;
+        btnstart.innerHTML = '&#9658;';
+
+        arr = [];
+        for (var x = 0; x <= arrw; x++) {
+            arr[x] = [];
+            for (var y = 0; y <= arrh; y++) {
+                var hp = x + ':' + y;
+
+                if (hpoints.indexOf(hp) >= 0) {
+                    arr[x][y] = 1;
+                } else {
+                    arr[x][y] = 0;
+                }
+
+                renderPoint(x, y, arr[x][y]);
+            }
+        }
+
+
+    }
+
+    function lifeMove(mx, my) {
+        var newarr = [];
+        for (var x = 0; x <= arrw; x++) {
+            newarr[x] = [];
+            for (var y = 0; y <= arrh; y++) {
+                if (getPoint(x + mx, y + my)) {
+                    newarr[x][y] = arr[x + mx][y + my];
+                } else {
+                    newarr[x][y] = 0;
+                }
+                renderPoint(x, y, newarr[x][y]);
+
+            }
+        }
+        arr = newarr;
+        newarr = [];
+    }
+
+    function renderPoint(x, y, color) {
+        if (color === 1) {
+            ctx.fillStyle = 'rgb(0, 0, 200)';
+        } else {
+            ctx.fillStyle = 'rgb(225, 225, 225)';
+        }
+
+        ctx.fillRect(x * size + 1, y * size + 1, size - 1, size - 1);
+    }
+
+    function hasPoint(map, x, y) {
+        return (map[x] !== undefined && map[x][y] !== undefined) ? 1 : 0;
+    }
+
+    function getPoint(x, y) {
+        return hasPoint(arr, x, y) ? arr[x][y] : 0;
+    }
+
+    function lifeCicle() {
+        var livecnt = 0;
+        var newarr = [];
+
+        var map = 'map';
+
+        for (var x = 0; x <= arrw; x++) {
+            newarr[x] = [];
+            for (var y = 0; y <= arrh; y++) {
+
+                map += getPoint(x, y);
+
+                var livesib = 0;
+
+                livesib += getPoint(x - 1, y);
+                livesib += getPoint(x - 1, y - 1);
+                livesib += getPoint(x - 1, y + 1);
+
+                livesib += getPoint(x + 1, y);
+                livesib += getPoint(x + 1, y - 1);
+                livesib += getPoint(x + 1, y + 1);
+
+                livesib += getPoint(x, y - 1);
+                livesib += getPoint(x, y + 1);
+
+                newarr[x][y] = 0;
+                if (getPoint(x, y)) {
+                    livecnt++;
+                    if (livesib === 2 || livesib === 3) {
+                        newarr[x][y] = 1;
+                    }
+                } else {
+                    if (livesib === 3) {
+                        newarr[x][y] = 1;
+                    }
+                }
+
+                if (newarr[x][y] !== arr[x][y]) {
+                    renderPoint(x, y, newarr[x][y]);
+                }
+            }
+        }
+
+        arr = newarr;
+        newarr = [];
+
+        ciclecnt++;
+        btnstart.innerHTML = '||';
+
+        if (lastmap === map) {
+            lifeCicleStop();
+        } else {
+            lastmap = map;
+        }
+
+        if (livecnt === 0) {
+            lifeCicleStop();
+        }
+
+    }
+
+    function getCursorCoord(e) {
+        var rect = canvas.getBoundingClientRect();
+        var clientX = 0;
+        var clientY = 0;
+
+        if (e.touches && e.touches[1]) {
+            return false;
+        }
+
+        if (e.touches && e.touches[0]) {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+
+        var x = clientX - rect.left;
+        var y = clientY - rect.top;
+
+        x = Math.round((x - size / 2) / size);
+        y = Math.round((y - size / 2) / size);
+
+        return {x: x, y: y}
+    }
+
+    function lifeDrawHandler(e) {
+
+        var coord = getCursorCoord(e);
+        var curcolor = getPoint(coord.x, coord.y);
+        var uid = 'pos' + coord.x + coord.y + curcolor;
+
+        if (firstcolor === -1) {
+            firstcolor = curcolor;
+            firstcolor = (firstcolor === 0) ? 1 : 0;
+        }
+
+        if (uid !== lastpos) {
+            lastpos = uid;
+            if (hasPoint(arr, coord.x, coord.y)) {
+                arr[coord.x][coord.y] = firstcolor;
+                renderPoint(coord.x, coord.y, firstcolor);
+            }
+
+
+        }
+    }
+
+    function lifeCiclePlay() {
+        if (!lifeinterval) {
+            btnstart.innerHTML = '||';
+            lifeinterval = setInterval(lifeCicle, lifetimeout);
+        } else {
+            lifeCicleStop();
+        }
+    }
+
+    function lifeHashLoad() {
+        var hash = location.hash;
+        if (hash.indexOf('#') === 0) {
+            hash = hash.substr(1);
+            hpoints = hash.split(';');
+        }
+
+        if (hpoints[0]) {
+            var hsize = hpoints[0].split(':');
+            if (hsize[0] && hsize[0] === 'z') {
+                var tmpsize = parseInt(hsize[1], 10);
+                if (tmpsize > 0) {
+                    setSize(tmpsize);
+                }
+            }
+        }
+
+    }
+
+    function lifeHashSave() {
+        var map = [];
+        map.push('z:' + size);
+
+        for (var x = 0; x <= arrw; x++) {
+            for (var y = 0; y <= arrh; y++) {
+                if (arr[x][y] > 0) {
+                    map.push(x + ':' + y);
+                }
+            }
+        }
+
+        location.hash = '#' + map.join(';');
+    }
+
+    function lifeHashNew() {
+        location.hash = '';
+        hpoints = [];
+    }
+
+    function lifeCicleStop() {
+        if (lifeinterval) {
+            clearInterval(lifeinterval);
+            lifeinterval = null;
+        }
+        btnstart.innerHTML = '&#9658;';
+    }
+
+    function getRand(min, max) {
+        var rand = min - 0.5 + Math.random() * (max - min + 1);
+        return Math.round(rand);
+    }
+
+    window.addEventListener('resize', function (event) {
+        clearTimeout(resizeinterval);
+        resizeinterval = setTimeout(lifeResize, resizetimeout);
+    });
+
+    canvas.addEventListener('click', function (e) {
+        isclick = 1;
+        isdown = 0;
+        firstcolor = -1;
+        lifeDrawHandler(e);
+        isclick = 0;
+    });
+
+    canvas.addEventListener(move_event, function (e) {
+        if (isdown && !isclick) {
+            lifeDrawHandler(e);
+        }
+    });
+
+    canvas.addEventListener(up_event, function (e) {
+        isdown = 0;
+    });
+
+    canvas.addEventListener(down_event, function (e) {
+        isdown = 1;
+        firstcolor = -1;
+    });
+
+    btnclear.addEventListener('click', function (e) {
+        e.preventDefault();
+        lifeHashNew();
+        lifeCicleStop();
+        lifeCreateNew();
+    });
+
+    btnstart.addEventListener('click', function (e) {
+        e.preventDefault();
+        lifeCiclePlay();
+    });
+
+    btnshare.addEventListener('click', function (e) {
+        e.preventDefault();
+        lifeHashSave();
+    });
+
+
+    document.addEventListener(up_event, function (e) {
+        clearInterval(moveinterval);
+    });
+
+    btnleft.addEventListener(down_event, function (e) {
+        e.preventDefault();
+        clearInterval(moveinterval);
+        moveinterval = setInterval(function () {
+            lifeMove(1, 0);
+        }, 100);
+    });
+
+    btnright.addEventListener(down_event, function (e) {
+        e.preventDefault();
+        clearInterval(moveinterval);
+        moveinterval = setInterval(function () {
+            lifeMove(-1, 0);
+        }, 100);
+
+    });
+
+    btndown.addEventListener(down_event, function (e) {
+        e.preventDefault();
+        clearInterval(moveinterval);
+        moveinterval = setInterval(function () {
+            lifeMove(0, -1);
+        }, 100);
+
+    });
+
+    btnup.addEventListener(down_event, function (e) {
+        e.preventDefault();
+        clearInterval(moveinterval);
+        moveinterval = setInterval(function () {
+            lifeMove(0, 1);
+        }, 100);
+
+    });
+
+    btnsizeplus.addEventListener(down_event, function (e) {
+        e.preventDefault();
+        clearInterval(moveinterval);
+        moveinterval = setInterval(function () {
+            lifeScale(1);
+        }, 100);
+    });
+
+    btnsizeminus.addEventListener(down_event, function (e) {
+        e.preventDefault();
+        clearInterval(moveinterval);
+        moveinterval = setInterval(function () {
+            lifeScale(-1);
+        }, 100);
+
+    });
+
+</script>
+</body>
+</html>
