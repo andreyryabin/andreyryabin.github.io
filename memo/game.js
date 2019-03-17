@@ -30,7 +30,7 @@ function memogame() {
             let clienth = parseInt(document.body.clientHeight, 10);
 
             let cardInRow = 6;
-            if (clientw < clienth){
+            if (clientw < 1024){
                 cardInRow = 4;
             }
 
