@@ -44,8 +44,6 @@
             let cardsCount = Math.floor(cardInCol) * cardInRow;
 
             this.cardsize = cardSize;
-            alert(cardsCount);
-
             this.$slide = document.createElement('div');
             this.$slide.setAttribute('class', 'garageslide');
             document.body.appendChild(this.$slide);
