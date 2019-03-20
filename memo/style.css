@@ -14,6 +14,17 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.garageslide {
+    position: absolute;
+    z-index: 250;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: none;
+    text-align: center;
+    background: #00A797;
+}
 
 .gamemenu {
     position: absolute;
@@ -26,14 +37,13 @@ body {
     text-align: center;
 }
 
-.mainmenu img,
 .gamemenu img {
     border-radius: 10px;
     max-width: 200px;
     height: auto;
 }
 
-.menutext {
+.gamemenu-item {
     color: #fff;
     font-size: 2em;
     /*font-weight: bold;*/
@@ -46,8 +56,8 @@ body {
     margin: 10px;
 }
 
-.menutext a,
-a.menutext {
+.gamemenu-item a,
+a.gamemenu-item {
     /*text-decoration: underline;*/
     text-decoration: none;
     color: #fff;
@@ -88,7 +98,7 @@ a.menutext {
 .number {
     padding: 0.5em;
     color: #fff;
-    font-size: 2em;
+    font-size: 1.5em;
     /*font-weight: bold;*/
     text-align: left;
 }
@@ -209,4 +219,18 @@ a.menutext {
 
 .finish .gamemenu {
     display: block;
+}
+
+
+
+@media (min-width: 800px) {
+    .gamemenu-items {
+        width: 50%;
+        margin: 0 auto;
+
+    }
+
+    .gamemenu-item {
+        font-size: 4em;
+    }
 }

@@ -1,29 +1,39 @@
 let gamemenu = {
 
-    $el: document.getElementById('gamemenu'),
+    init: '',
+
+    getmenu: function () {
+        if (!this.init) {
+            let $menu = document.getElementById('gamemenu');
+            let ob = document.createElement('div');
+            ob.setAttribute('class', 'gamemenu-items');
+            $menu.appendChild(ob);
+            this.init = ob;
+        }
+
+        return this.init;
+    },
 
     clean: function () {
-        this.$el.innerHTML = '';
+        this.getmenu().innerHTML = '';
         document.body.classList.remove('finish');
     },
 
     add: function (text, href) {
-        let $el;
+        let ob;
 
         if (href) {
-            $el = document.createElement('a');
-            $el.setAttribute('href', href);
+            ob = document.createElement('a');
+            ob.setAttribute('href', href);
         } else {
-            $el = document.createElement('div');
+            ob = document.createElement('div');
         }
 
-        $el.innerHTML = text;
+        ob.innerHTML = text;
 
-        $el.setAttribute('class', 'menutext');
+        ob.setAttribute('class', 'gamemenu-item');
 
-        this.$el.appendChild($el);
-
-
+        this.getmenu().appendChild(ob);
         document.body.classList.add('finish');
 
     }

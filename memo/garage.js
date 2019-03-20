@@ -15,94 +15,203 @@
     let game = {
         cards: [],
 
+        opened: [],
+
         gamearea: document.getElementById('gamearea'),
+
+        $el: document.getElementById('gamearea'),
+
+        $slide: '',
+
+        showcount: 1,
+
+        missclick: 0,
 
         initialize: function () {
             let clientw = parseInt(document.body.clientWidth, 10);
             let clienth = parseInt(document.body.clientHeight, 10);
 
-            let cardInRow = 8;
-            if (clientw < 1024) {
-                cardInRow = 6;
-            }
+            this.$slide = document.createElement('div');
+            this.$slide.setAttribute('class', 'garageslide');
+            document.body.appendChild(this.$slide);
 
-            let cardSize = ((clientw - 40) - (cardInRow * 20)) / cardInRow;
-            let cardInCol = (clienth - 40) / (cardSize + 20);
-            let cardsCount = Math.floor(cardInCol) * cardInRow;
+            let tmpimages = shuffle(memoimages);
+            this.cards = tmpimages.slice(0, 20);
 
-            this.createcards(cardsCount, cardSize);
+
+            this.imagecache(this.cards);
+
+            this.showcount = 1;
+            this.shownextcards();
+
         },
 
-        createcard: function (name, index, cardSize) {
+        clickevent: function (name) {
+
+            if (this.opened.indexOf(name) >= 0) {
+
+                this.missclick++;
+
+                if (this.missclick >= 5) {
+                    gamemenu.add('Будь внимательней!<br/>Играть еще!', 'index.html')
+                    return;
+
+                }
+
+                gamemenu.add('нет');
+
+                setTimeout(() => {
+                    gamemenu.clean();
+
+                    this.shownextcards()
+                }, 500);
+
+
+            } else {
+
+                this.missclick = 0;
+                this.opened.push(name);
+
+                if (this.opened.length === this.cards.length) {
+                    gamemenu.add('Молодец!<br/>Играть еще!', 'index.html')
+                    return;
+                }
+
+
+                gamemenu.add('Правильно!');
+
+                setTimeout(() => {
+                    gamemenu.clean();
+
+                    this.showcount++;
+                    this.shownextcards()
+                }, 500);
+
+            }
+
+
+            // let rand = randomint(20, memoimages.length - 1);
+
+            //this.cards.splice(index, 1);
+            // this.cards[index] = memoimages[rand];
+
+            // this.cards = shuffle(this.cards);
+
+
+        },
+
+        shownextcards: function () {
+            // this.animation1(() => {
+
+            this.gamearea.innerHTML = '';
+
+            let cards = this.cards.slice(0, this.showcount);
+            cards = shuffle(cards);
+
+            for (let index = 0; index < cards.length; index++) {
+                this.createcard(cards[index], 200);
+            }
+            // });
+        },
+
+        imagecache: function (images) {
+            let $cache = document.getElementById('imagecache');
+
+            for (let index = 0; index < images.length; index++) {
+
+                let $img = document.createElement('img');
+                $img.setAttribute('src', images[index]);
+                $cache.appendChild($img);
+            }
+        },
+
+        createcard: function (name, cardSize) {
             let $el = document.createElement('div');
             $el.setAttribute('class', 'card');
             $el.style.width = cardSize + 'px';
             $el.style.height = cardSize + 'px';
 
-            $el.innerHTML = '<div class="front">' +
-                '<div class="number">' + (index + 1) + '</div>' +
-                '</div>' +
-                '<div class="back"><img alt="pic' + index + '" src="' + name + '"/></div>';
+            $el.innerHTML = '<img alt="pic" src="' + name + '"/>';
 
             $el.addEventListener(click_event, (e) => {
-                this.clickevent(index);
+                this.clickevent(name);
             });
 
             this.gamearea.appendChild($el);
             return $el;
         },
 
-        createcards: function (cardsCount, cardSize) {
-            clearTimeout(this.timerclose);
+        animation2: function (callback100) {
+            this.$slide.style.opacity = '0';
+            this.$slide.style.display = 'block';
 
-            this.gamearea.innerHTML = '';
+            let timeout = 25;
+            let opacity = 0;
+            let open = 1;
 
-            let tmpimages = shuffle(memoimages);
-            tmpimages = tmpimages.slice(0, cardsCount);
+            let interval = setInterval(() => {
+                if (open) {
+                    opacity += 0.1;
+                    if (opacity > 1) {
+                        opacity = 1;
+                        open = 0;
 
-            let tmpcards = [];
-            for (let index = 0; index < tmpimages.length; index++) {
-                tmpcards.push(tmpimages[index]);
-            }
+                        if (callback100) {
+                            callback100();
+                        }
 
-            this.cards = [];
-
-            for (let index = 0; index < tmpcards.length; index++) {
-                let $el = this.createcard(tmpcards[index], index, cardSize);
-                this.cards.push({
-                    'name': tmpcards[index],
-                    '$el': $el,
-                    'lock': 0,
-                })
-            }
-        },
-
-        clickevent: function (index) {
-            let card = this.cards[index];
-
-
-        },
-
-
-        closecards: function () {
-            for (let index = 0; index < this.cards.length; index++) {
-                if (!this.cards[index].lock) {
-                    this.cards[index].$el.classList.remove('flip');
+                    }
+                } else {
+                    opacity -= 0.1;
                 }
-            }
+
+                if (opacity < 0) {
+                    opacity = 0;
+                    clearInterval(interval);
+                    this.$slide.style.display = 'none';
+                }
+
+                this.$slide.style.opacity = '' + opacity;
+
+            }, timeout);
         },
 
-        opencards: function () {
-            for (let index = 0; index < this.cards.length; index++) {
-                this.cards[index].$el.classList.add('flip');
-            }
+        animation1: function (callback100) {
+            this.$slide.style.width = '0%';
+            this.$slide.style.display = 'block';
+
+            let timeout = 25;
+            let opacity = 0;
+            let open = 1;
+
+            let step = 10;
+
+            let interval = setInterval(() => {
+                if (open) {
+                    opacity += step;
+                    if (opacity > 100) {
+                        opacity = 100;
+                        open = 0;
+
+                        if (callback100) {
+                            callback100();
+                        }
+
+                    }
+                } else {
+                    opacity -= step;
+                }
+
+                if (opacity < 0) {
+                    opacity = 0;
+                    clearInterval(interval);
+                    this.$slide.style.display = 'none';
+                }
+
+                this.$slide.style.width = opacity + '%';
+
+            }, timeout);
         },
-
-        opencard: function (index) {
-            this.cards[index].$el.classList.add('flip');
-        },
-
-
     };
 
 
@@ -124,10 +233,5 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         game.initialize();
-
-        // window.addEventListener('resize', function (event) {
-        //     game.initialize(1);
-        // });
-
     });
 })();

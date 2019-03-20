@@ -19,7 +19,7 @@
         intervalclose: 2500,
         timerclose: 0,
 
-        $el: document.getElementById('gamearea'),
+        gamearea: document.getElementById('gamearea'),
 
         hintclicks: 0,
         lockcnt: 0,
@@ -55,14 +55,14 @@
                 this.clickevent(index);
             });
 
-            this.$el.appendChild($el);
+            this.gamearea.appendChild($el);
             return $el;
         },
 
         createcards: function (cardsCount, cardSize) {
             clearTimeout(this.timerclose);
 
-            this.$el.innerHTML = '';
+            this.gamearea.innerHTML = '';
 
             this.cards = [];
             this.opened = [];
