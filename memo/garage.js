@@ -27,16 +27,31 @@
 
         missclick: 0,
 
+        cardsize: 0,
+
         initialize: function () {
             let clientw = parseInt(document.body.clientWidth, 10);
             let clienth = parseInt(document.body.clientHeight, 10);
+
+
+            let cardInRow = 6;
+            if (clientw < 1024) {
+                cardInRow = 4;
+            }
+
+            let cardSize = ((clientw - 40) - (cardInRow * 20)) / cardInRow;
+            let cardInCol = (clienth - 40) / (cardSize + 20);
+            let cardsCount = Math.floor(cardInCol) * cardInRow;
+
+            this.cardsize = cardSize;
+            alert(cardsCount);
 
             this.$slide = document.createElement('div');
             this.$slide.setAttribute('class', 'garageslide');
             document.body.appendChild(this.$slide);
 
             let tmpimages = shuffle(memoimages);
-            this.cards = tmpimages.slice(0, 20);
+            this.cards = tmpimages.slice(0, cardsCount);
 
 
             this.imagecache(this.cards);
@@ -89,14 +104,6 @@
             }
 
 
-            // let rand = randomint(20, memoimages.length - 1);
-
-            //this.cards.splice(index, 1);
-            // this.cards[index] = memoimages[rand];
-
-            // this.cards = shuffle(this.cards);
-
-
         },
 
         shownextcards: function () {
@@ -108,7 +115,7 @@
             cards = shuffle(cards);
 
             for (let index = 0; index < cards.length; index++) {
-                this.createcard(cards[index], 200);
+                this.createcard(cards[index], this.cardsize);
             }
             // });
         },
