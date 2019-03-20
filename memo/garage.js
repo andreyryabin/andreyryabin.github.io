@@ -43,7 +43,6 @@
 
             this.showcount = 1;
             this.shownextcards();
-
         },
 
         clickevent: function (name) {

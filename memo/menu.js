@@ -24,7 +24,18 @@ let gamemenu = {
 
         if (href) {
             ob = document.createElement('a');
-            ob.setAttribute('href', href);
+
+            if (typeof href === 'function') {
+                ob.setAttribute('href', '#');
+                ob.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    href();
+                });
+            } else {
+                ob.setAttribute('href', href);
+            }
+
+
         } else {
             ob = document.createElement('div');
         }
