@@ -56,15 +56,24 @@ body {
     margin: 10px;
 }
 
-.gamemenu-item a,
-a.gamemenu-item {
+.gamemenu a {
     /*text-decoration: underline;*/
     text-decoration: none;
-    color: #fff;
+}
+
+
+.garage .gamemenu-item{
+    background: #fff;
+    color: #0097A7;
 }
 
 .gamearea {
     padding: 10px;
+
+}
+
+.garage {
+    background: #0097A7;
 }
 
 .gamearea:after {
@@ -111,11 +120,6 @@ a.gamemenu-item {
 .card .front {
     background: #0097A7;
 }
-
-.garage .card .front{
-    background: #00A797;
-}
-
 
 .card.hint .front {
     background: #97A700;
@@ -220,7 +224,6 @@ a.gamemenu-item {
 .finish .gamemenu {
     display: block;
 }
-
 
 
 @media (min-width: 800px) {
