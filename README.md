@@ -1,5 +1,10 @@
 # andreyryabin.github.io
 
-https://andreyryabin.github.io/memo/
+[Игры на память](https://andreyryabin.github.io/memo/)
 
-https://andreyryabin.github.io/life/
+[Игра жизнь](https://andreyryabin.github.io/life/)
+
+[Таблица Шульте](https://andreyryabin.github.io/schulte_table/)
+
+[Тест Струпа](https://andreyryabin.github.io/stroop_effect/)
+
