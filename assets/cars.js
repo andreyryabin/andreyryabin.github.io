@@ -1,4 +1,4 @@
-const memoimages = [
+const assets_cars = [
     "/assets/cars/img-1552600265-1.jpg",
     "/assets/cars/img-1552600265-2.jpg",
     "/assets/cars/img-1552600265-3.jpg",

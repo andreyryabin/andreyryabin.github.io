@@ -69,7 +69,7 @@
 
             let sliceVal = cardsCount / 2;
 
-            let tmpimages = shuffle(memoimages);
+            let tmpimages = shuffle(assets_cars);
             tmpimages = tmpimages.slice(0, sliceVal);
 
             let tmpcards = [];
@@ -135,6 +135,7 @@
 
                     setTimeout(() => {
                         gamemenu.add('Молодец!<br/>Играть еще!', 'index.html')
+                        gamemenu.add('Другие игры', '/')
                     }, 500);
 
                     return;
@@ -208,21 +209,6 @@
 
     };
 
-
-    function randomint(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function shuffle(a) {
-        let j, x, i;
-        for (i = a.length - 1; i > 0; i--) {
-            j = Math.floor(Math.random() * (i + 1));
-            x = a[i];
-            a[i] = a[j];
-            a[j] = x;
-        }
-        return a;
-    }
 
     document.addEventListener('DOMContentLoaded', function () {
         game.initialize();

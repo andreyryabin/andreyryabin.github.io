@@ -1,0 +1,107 @@
+.number {
+    padding: 0.5em;
+    color: #fff;
+    font-size: 1.5em;
+    /*font-weight: bold;*/
+    text-align: left;
+}
+
+
+
+.card {
+    margin: 10px;
+    float: left;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    font-size: 1em;
+    color: #333;
+
+    /*-webkit-perspective: 600px;*/
+    /*perspective: 600px;*/
+
+    background: #fff;
+    overflow: hidden;
+    text-align: center;
+
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+
+.card img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+
+
+
+.card .front {
+    background: #0097A7;
+}
+
+.card.hint .front {
+    background: #97A700;
+}
+
+.card .front {
+    float: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 90;
+    width: inherit;
+    height: inherit;
+
+    -webkit-transform: rotateX(0) rotateY(0);
+    transform: rotateX(0) rotateY(0);
+
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    /* -- transition is the magic sauce for animation -- */
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.card.flip .front {
+    z-index: 90;
+
+    -webkit-transform: rotateY(179deg);
+    transform: rotateY(179deg);
+}
+
+.card .back {
+    float: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 80;
+    width: inherit;
+    height: inherit;
+
+    -webkit-transform: rotateY(-179deg);
+    transform: rotateY(-179deg);
+
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    /* -- transition is the magic sauce for animation -- */
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.card.flip .back {
+    z-index: 100;
+    -webkit-transform: rotateX(0) rotateY(0);
+    transform: rotateX(0) rotateY(0);
+}

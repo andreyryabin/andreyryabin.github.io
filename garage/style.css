@@ -1,0 +1,38 @@
+.garage {
+    background: #0097A7;
+}
+
+.garage .gamemenu-item {
+    background: #fff;
+    color: #0097A7;
+}
+
+
+
+
+.card {
+    margin: 10px;
+    float: left;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    font-size: 1em;
+    color: #333;
+
+    /*-webkit-perspective: 600px;*/
+    /*perspective: 600px;*/
+
+    background: #fff;
+    overflow: hidden;
+    text-align: center;
+
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+
+.card img {
+    max-width: 100%;
+    height: auto;
+}

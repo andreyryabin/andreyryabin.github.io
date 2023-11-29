@@ -21,8 +21,6 @@
 
         $el: document.getElementById('gamearea'),
 
-        $slide: '',
-
         showcount: 1,
 
         missclick: 0,
@@ -44,11 +42,8 @@
             let cardsCount = Math.floor(cardInCol) * cardInRow;
 
             this.cardsize = cardSize;
-            this.$slide = document.createElement('div');
-            this.$slide.setAttribute('class', 'garageslide');
-            document.body.appendChild(this.$slide);
 
-            let tmpimages = shuffle(memoimages);
+            let tmpimages = shuffle(assets_cars);
             this.cards = tmpimages.slice(0, cardsCount);
 
 
@@ -66,6 +61,7 @@
 
                 if (this.missclick >= 5) {
                     gamemenu.add('Будь внимательней!<br/>Играть еще!', 'index.html')
+                    gamemenu.add('Другие игры', '/')
                     return;
 
                 }
@@ -86,6 +82,7 @@
 
                 if (this.opened.length === this.cards.length) {
                     gamemenu.add('Молодец!<br/>Играть еще!', 'index.html')
+                    gamemenu.add('Другие игры', '/')
                     return;
                 }
 
@@ -144,96 +141,7 @@
             this.gamearea.appendChild($el);
             return $el;
         },
-
-        animation2: function (callback100) {
-            this.$slide.style.opacity = '0';
-            this.$slide.style.display = 'block';
-
-            let timeout = 25;
-            let opacity = 0;
-            let open = 1;
-
-            let interval = setInterval(() => {
-                if (open) {
-                    opacity += 0.1;
-                    if (opacity > 1) {
-                        opacity = 1;
-                        open = 0;
-
-                        if (callback100) {
-                            callback100();
-                        }
-
-                    }
-                } else {
-                    opacity -= 0.1;
-                }
-
-                if (opacity < 0) {
-                    opacity = 0;
-                    clearInterval(interval);
-                    this.$slide.style.display = 'none';
-                }
-
-                this.$slide.style.opacity = '' + opacity;
-
-            }, timeout);
-        },
-
-        animation1: function (callback100) {
-            this.$slide.style.width = '0%';
-            this.$slide.style.display = 'block';
-
-            let timeout = 25;
-            let opacity = 0;
-            let open = 1;
-
-            let step = 10;
-
-            let interval = setInterval(() => {
-                if (open) {
-                    opacity += step;
-                    if (opacity > 100) {
-                        opacity = 100;
-                        open = 0;
-
-                        if (callback100) {
-                            callback100();
-                        }
-
-                    }
-                } else {
-                    opacity -= step;
-                }
-
-                if (opacity < 0) {
-                    opacity = 0;
-                    clearInterval(interval);
-                    this.$slide.style.display = 'none';
-                }
-
-                this.$slide.style.width = opacity + '%';
-
-            }, timeout);
-        },
     };
-
-
-    function randomint(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function shuffle(a) {
-        let j, x, i;
-        for (i = a.length - 1; i > 0; i--) {
-            j = Math.floor(Math.random() * (i + 1));
-            x = a[i];
-            a[i] = a[j];
-            a[j] = x;
-        }
-        return a;
-    }
-
 
     document.addEventListener('DOMContentLoaded', function () {
         game.initialize();
