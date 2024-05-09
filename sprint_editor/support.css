@@ -6,6 +6,7 @@
 
 .sp-support-table {
     display: table;
+    width: 100%;
 }
 
 .sp-support-row {
