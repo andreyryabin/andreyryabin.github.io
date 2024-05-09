@@ -31,13 +31,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
     ;
 
     let $el = document.getElementById('support_page');
-
-    if ($el && $el.length > 0) {
+    if ($el) {
         $el.innerHTML = render(info);
-
         events($el);
     }
-
 
     function render(info) {
         let html = '';

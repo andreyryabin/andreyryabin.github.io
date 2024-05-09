@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         description: '' +
             'На этой странице можно поддержать улучшения, предложенные пользователями модуля, которые вы хотели бы видеть в обновлениях.' +
             '<br/><br/>' +
-            'Предложить свою идею по улучшению можно в <a href="https://t.me/sprint_migration_bitrix">telegram-группе</a>' +
+            'Предложить свою идею по улучшению можно в <a href="https://t.me/sprint_migration_bitrix">telegram-группе</a> ' +
             'или на странице модуля в <a href="https://marketplace.1c-bitrix.ru/solutions/sprint.migration/#tab-comments-link">маркетплейсе</a><br/>' +
             'Появление вашей идеи в списке ниже означает, что она реализуема, полезна и взята в работу.<br/>' +
             'После завершения сбора она появится в ближайшем обновлении модуля.',
@@ -17,10 +17,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
     };
 
     let $el = document.getElementById('support_page');
-
-    if ($el && $el.length > 0) {
+    if ($el) {
         $el.innerHTML = render(info);
-
         events($el);
     }
 
