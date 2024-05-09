@@ -1,0 +1,49 @@
+
+.sp-support-description,
+.sp-support-table {
+    margin-bottom: 15px;
+}
+
+.sp-support-table {
+    display: table;
+}
+
+.sp-support-row {
+    display: table-row;
+}
+
+.sp-support-col-tabs {
+    display: table-cell;
+    width: 40%;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    vertical-align: top;
+}
+
+.sp-support-col-contents {
+    width: 60%;
+}
+
+.sp-support-link {
+    display: block;
+    background-color: inherit;
+    /*color: black;*/
+    padding: 22px 16px;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sp-support-link:hover {
+    background-color: #ddd;
+}
+
+.sp-support-link.active {
+    background-color: #ccc;
+}
+
+.sp-support-content {
+    display: none;
+}
