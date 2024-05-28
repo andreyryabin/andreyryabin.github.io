@@ -23,6 +23,7 @@
 
 .sp-support-col-contents {
     width: 60%;
+    display: table-cell;
 }
 
 .sp-support-link {
