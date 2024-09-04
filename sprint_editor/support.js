@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
                 'После завершения сбора она появится в ближайшем обновлении модуля.',
             items: [
                 {
+                    title: "Интеграция с Flickr",
+                    description: "Разработка блока \"Галерея из Flickr\". В блоке нужно будет указывать id альбома, в публичной части будет отображаться список фотографий из этого альбома.",
+                    content: "<iframe src=\"https://yoomoney.ru/quickpay/fundraise/widget?billNumber=15259KA709U.240904&\" width=\"500\" height=\"480\" frameborder=\"0\" allowtransparency=\"true\" scrolling=\"no\"></iframe>"
+                },
+                {
                     title: "Отдельный раздел для статей",
                     description: "Разработка в админке отдельного раздела со статьями, новый тип свойства у инфоблоков \"привязка к статье\".",
                     content: "<iframe src=\"https://yoomoney.ru/quickpay/fundraise/widget?billNumber=3Nh3BQRLQqg.231129\" width=\"500\" height=\"480\" frameborder=\"0\" allowtransparency=\"true\" scrolling=\"no\"></iframe>"
